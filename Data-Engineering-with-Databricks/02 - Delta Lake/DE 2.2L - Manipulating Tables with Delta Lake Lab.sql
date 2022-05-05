@@ -63,7 +63,8 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+CREATE OR REPLACE TABLE beans
+  (name STRING, color STRING, grams FLOAT, delicious BOOLEAN)
 
 -- COMMAND ----------
 
@@ -107,7 +108,7 @@ INSERT INTO beans VALUES
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+SELECT * from beans
 
 -- COMMAND ----------
 
@@ -120,7 +121,8 @@ INSERT INTO beans VALUES
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+INSERT INTO beans
+VALUES
 ('pinto', 'brown', 1.5, true),
 ('green', 'green', 178.3, true),
 ('beanbag chair', 'white', 40000, false)
@@ -171,7 +173,13 @@ WHERE name = "jelly"
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+UPDATE beans
+SET grams = 1500
+WHERE name = "pinto"
+
+-- COMMAND ----------
+
+select * from beans
 
 -- COMMAND ----------
 
@@ -205,7 +213,8 @@ WHERE name = "jelly"
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+DELETE FROM beans
+WHERE delicious IS NOT TRUE
 
 -- COMMAND ----------
 
@@ -243,6 +252,10 @@ SELECT * FROM new_beans
 
 -- COMMAND ----------
 
+SELECT * from beans
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
@@ -257,7 +270,14 @@ SELECT * FROM new_beans
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+MERGE beans a
+USING new_beans b
+ON a.name = b.name AND a.color = b.color
+when matched then
+  UPDATE set grams = a.grams + b.grams
+WHEN not matched and b.delicious is true then
+  INSERT *
+
 
 -- COMMAND ----------
 
@@ -296,7 +316,7 @@ SELECT * FROM new_beans
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+DROP TABLE beans
 
 -- COMMAND ----------
 
