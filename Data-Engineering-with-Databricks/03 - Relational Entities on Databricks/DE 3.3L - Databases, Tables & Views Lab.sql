@@ -79,7 +79,7 @@ FROM parquet.`${da.paths.working_dir}/weather`
 
 -- TODO
 
-<FILL-IN> ${da.db_name}
+CREATE DATABASE IF NOT EXISTS ${da.db_name}
 
 -- COMMAND ----------
 
@@ -105,7 +105,7 @@ FROM parquet.`${da.paths.working_dir}/weather`
 
 -- TODO
 
-<FILL-IN> ${da.db_name}
+USE ${da.db_name}
 
 -- COMMAND ----------
 
@@ -130,7 +130,7 @@ FROM parquet.`${da.paths.working_dir}/weather`
 
 -- TODO
 
-<FILL-IN>
+CREATE OR REPLACE TABLE weather_managed AS
 SELECT * 
 FROM parquet.`${da.paths.working_dir}/weather`
 
@@ -148,6 +148,10 @@ FROM parquet.`${da.paths.working_dir}/weather`
 
 -- COMMAND ----------
 
+select * from weather_managed
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
@@ -159,7 +163,7 @@ FROM parquet.`${da.paths.working_dir}/weather`
 
 -- TODO
 
-<FILL-IN>
+CREATE OR REPLACE TABLE weather_external
 LOCATION "${da.paths.working_dir}/lab/external"
 AS SELECT * 
 FROM parquet.`${da.paths.working_dir}/weather`
@@ -250,7 +254,7 @@ DESCRIBE EXTENDED weather_external
 
 -- TODO
 
-<FILL_IN> ${da.db_name}
+DROP DATABASE ${da.db_name} CASCADE
 
 -- COMMAND ----------
 
@@ -275,8 +279,8 @@ DESCRIBE EXTENDED weather_external
 -- COMMAND ----------
 
 -- MAGIC %python
--- MAGIC # files = dbutils.fs.ls(managedTablePath)
--- MAGIC # display(files)
+-- MAGIC files = dbutils.fs.ls(managedTablePath)
+-- MAGIC display(files)
 
 -- COMMAND ----------
 
@@ -324,7 +328,9 @@ USE ${da.db_name};
 
 -- TODO
 
-<FILL_IN>
+CREATE OR REPLACE TABLE weather_managed
+AS SELECT * 
+FROM parquet.`${da.paths.working_dir}/weather`
 
 -- COMMAND ----------
 
@@ -366,7 +372,7 @@ USE ${da.db_name};
 
 -- TODO
 
-<FILL-IN>
+CREATE OR REPLACE VIEW celsius
 AS (SELECT *
   FROM weather_managed
   WHERE UNIT = "C")
@@ -394,7 +400,7 @@ AS (SELECT *
 
 -- TODO
 
-<FILL-IN>
+CREATE OR REPLACE TEMP VIEW celsius_temp
 AS (SELECT *
   FROM weather_managed
   WHERE UNIT = "C")
@@ -422,7 +428,7 @@ AS (SELECT *
 
 -- TODO
 
-<FILL-IN>
+CREATE OR REPLACE GLOBAL TEMP VIEW celsius_global
 AS (SELECT *
   FROM weather_managed
   WHERE UNIT = "C")
